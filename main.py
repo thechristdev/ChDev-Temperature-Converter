@@ -1,11 +1,10 @@
 #Christian Emanuel Wijaya (C) - 2026
 #Python Temperature Converter
+#ChTools
 
-'''
-╔╦╗┌─┐┌┬┐┌─┐┌─┐┬─┐┌─┐┌┬┐┬ ┬┬─┐┌─┐  ╔═╗┌─┐┌┐┌┬  ┬┌─┐┬─┐┌┬┐┌─┐┬─┐
- ║ ├┤ │││├─┘├┤ ├┬┘├─┤ │ │ │├┬┘├┤   ║  │ ││││└┐┌┘├┤ ├┬┘ │ ├┤ ├┬┘
- ╩ └─┘┴ ┴┴  └─┘┴└─┴ ┴ ┴ └─┘┴└─└─┘  ╚═╝└─┘┘└┘ └┘ └─┘┴└─ ┴ └─┘┴└─'''
-#=======Import Libraries=======#
+#=====================================#
+#IMPORT MODULE
+#=====================================#
 import os
 import sys
 import time
@@ -15,17 +14,20 @@ import subprocess
 import platform
 import json
 from modules import chcolor as chc
-from modules import title as wt
+from modules import chtitle as wt
 from modules import chbox as chb
-
-
+from modules import chmessage as msg
 import datetime
-
 platform = platform.system()
+#=====================================#
+#CONFIGURATION
+#=====================================#
 wt.Title.set("ChDev | Temperature Converter")
-#=======Tools Version=======#
-version = "1.0.0"
-#=======Tittle=======#
+version = "1.1.7"
+
+#=====================================#
+#TITTLE
+#=====================================#
 def title_main():
     print(chc.Color.CYAN+"╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗")
     print(chc.Color.CYAN+"║"+chc.Color.gradient("  _______                                  _                     _____                          _             ",[(0, 255, 255),(160, 32, 240)])+chc.Color.rgb(255, 0, 0)  +"(0)"+chc.Color.CYAN+"  ║")
@@ -38,16 +40,27 @@ def title_main():
     print(chc.Color.CYAN+"║"+chc.Color.gradient("                     |_|                                                                                      ",[(0, 255, 255),(160, 32, 240)])+chc.Color.rgb(0, 160, 255)+"|-|"+chc.Color.CYAN+"  ║")
     print(chc.Color.CYAN+"║"+chc.Color.gradient("                                                                                                              ",[(0, 255, 255),(160, 32, 240)])+chc.Color.rgb(0, 80, 255)+"|_|"+chc.Color.CYAN+"  ║")   
     print(chc.Color.CYAN+"╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝")
-#=======Menu=======#
-help_menu =chb.box("Help Menu ChTools", [
-    ("HELP                  ","Show usefull commands"),
-], width= 115)
-tc_menu ='''Temperature Code List:
-C                       Celsius
-F                       Fahrenheit
-R                       Reamur
-K                       Kelvin
-'''
+#=====================================#
+#MENU
+#=====================================#
+help_menu = chb.box("Help Menu — ChTools", [
+    ("CLEAR", "Clear the terminal screen. Removes all previous output and resets the display."),
+    ("EXIT",  "Exit the application. Closes ChTools and returns to the command prompt."),
+    ("HELP",  "Display this help menu. Shows all available commands with their descriptions."),
+    ("TC",    "Temperature Converter. Convert between Celsius, Fahrenheit, Reamur, and Kelvin."),
+    ("USAGE","Type <number> <unit> to convert. Example: 23 C"),
+], width=115)
+
+tc_menu = chb.table(
+    ["Code", "Unit"],
+    [
+        ["C", "Celsius"],
+        ["F", "Fahrenheit"],
+        ["R", "Reamur"],
+        ["K", "Kelvin"],
+    ],
+    aligns=["center", "left"],)
+
 TEMPERATURE_COLORS = [
     (0, 0, 180),       # 1. Biru tua
     (0, 80, 255),      # 2. Biru
@@ -59,14 +72,17 @@ TEMPERATURE_COLORS = [
     (255, 69, 0),      # 8. Oranye kemerahan
     (255, 0, 0)        # 9. Merah
 ]
-
+#=====================================#
+#MAIN
+#=====================================#
 def main():
     os.system('cls||clear')
     print(chc.Color.BG_BRIGHT_MAGENTA+chc.Color.BRIGHT_WHITE+'''ChDev | Temperature Converter [Version '''+version+'''] - Platform '''+platform+'''                                                     '''+chc.Color.RESET)
     title_main()
-    print(chc.Color.BOLD+"INFO: Gunakan help untuk bantuan")
+    msg.info("Type 'Help' to see the available commands.")
     while True:
-        int_term = input(":").lower()
+        int_term = input("ChTools | >").lower()
+        parts = int_term.split()
         if int_term == "help":
             print(help_menu)
         elif int_term == "exit":
@@ -75,12 +91,20 @@ def main():
             print(tc_menu)
         elif int_term == "clear":
             main()
-        else:
-            parts = int_term.split()
+            
+        elif len(parts) == 2:
+            
             if len(parts) == 2 and parts[1].lower() in ["c", "f", "r", "k"]:
-                val = float(parts[0])
+                try:
+                    val = float(parts[0])
+                except ValueError:
+                    msg.error(f"'{parts[0]}' is not a valid number. Please enter a numeric value.")
+                    msg.info("Type <number> <unit> to convert. Example: 23 C")
+                    continue                         
                 unit = parts[1].lower()
-
+                #=====================================#
+                #UNIT
+                #=====================================#
                 if unit == "c":
                     Celsius = val
                     Fahrenheit = (9 / 5) * Celsius + 32
@@ -104,46 +128,23 @@ def main():
                     Celsius = Kelvin - 273.15
                     Fahrenheit = (9 / 5) * Celsius + 32
                     Reamur = (4 / 5) * Celsius
-                else:
-                    return
+                
                 output = chb.box("Temperature Converter", [
                     ("Celsius",    f"{Celsius:.2f} °C"),
                     ("Fahrenheit", f"{Fahrenheit:.2f} °F"),
                     ("Reamur",     f"{Reamur:.2f} °Ré"),
                     ("Kelvin",     f"{Kelvin:.2f} K"),
                 ], width= 115)
-            
-                
-                            
-                if Celsius <= 0:
-                    index = 0
-                elif Celsius <= 10:
-                    index = 1
-                elif Celsius <= 15:
-                    index = 2
-                elif Celsius <= 20:
-                    index = 3
-                elif Celsius <= 25:
-                    index = 4
-                elif Celsius <= 30:
-                    index = 5
-                elif Celsius <= 35:
-                    index = 6
-                elif Celsius <= 40:
-                    index = 7
-                else:
-                    index = 8
-            
                 print(output)
             else:
-                print("sigma")
-            
-                
-
-                    
-                
-
-    
+                units = parts[1]
+                msg.error(f"Temperature unit '{units}' not found. Please use one of the following valid codes!")
+                print(tc_menu)
+                continue
+        else:
+            msg.error(f"Command '{int_term}' not found!")
+            msg.info("Type 'Help' to see the available commands.")
+            continue
 
 if __name__ == "__main__":
     main()

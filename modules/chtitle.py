@@ -1,6 +1,6 @@
-
-# Title Module
-# Created by Christian Emanuel Wijaya (C) - 2026
+#Christian Emanuel Wijaya (C) - 2026
+#ChTitle Module
+#ChTitle Version 1.0.0
 
 import sys
 

@@ -1,6 +1,6 @@
-# ChColor Module
-# Created by Christian Emanuel Wijaya (C) - 2026
-# ChColor Version 1.0.0
+#Christian Emanuel Wijaya (C) - 2026
+#ChColor Module
+#ChColor Version 1.0.0
 
 import os
 import ctypes

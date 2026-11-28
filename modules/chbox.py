@@ -1,5 +1,6 @@
-# modules/ChBox.py
-"""Draw boxes and tables with Unicode box-drawing characters."""
+#Christian Emanuel Wijaya (C) - 2026
+#ChBox Module
+#ChBox Version 1.0.0
 
 import unicodedata
 
