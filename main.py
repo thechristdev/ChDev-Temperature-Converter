@@ -44,11 +44,12 @@ def title_main():
 #MENU
 #=====================================#
 help_menu = chb.box("Help Menu — ChTools", [
+    ("ABOUT", "Display information about ChTools, including author, version, license, and donation links."),
     ("CLEAR", "Clear the terminal screen. Removes all previous output and resets the display."),
     ("EXIT",  "Exit the application. Closes ChTools and returns to the command prompt."),
     ("HELP",  "Display this help menu. Shows all available commands with their descriptions."),
     ("TC",    "Temperature Converter. Convert between Celsius, Fahrenheit, Reamur, and Kelvin."),
-    ("USAGE","Type <number> <unit> to convert. Example: 23 C"),
+    ("USAGE", "Type <number> <unit> to convert. Example: 23 C"),
 ], width=115)
 
 tc_menu = chb.table(
@@ -60,6 +61,15 @@ tc_menu = chb.table(
         ["K", "Kelvin"],
     ],
     aligns=["center", "left"],)
+
+show_about = chb.box("About ChTools", [
+    ("Name", "ChTools - Temperature Converter"),
+    ("Version",  version),
+    ("Author",  "thechrisdev AKA Christian Emanuel Wijaya"),
+    ("Copyright",    "(C) 2026 Christian Emanuel Wijaya "),
+    ("License",   "Apache License 2.0"),
+    ("Github","https://github.com/thechristdev"),
+], width=115)
 
 TEMPERATURE_COLORS = [
     (0, 0, 180),       # 1. Biru tua
@@ -91,6 +101,11 @@ def main():
             print(tc_menu)
         elif int_term == "clear":
             main()
+        elif int_term == "about":
+            print(show_about)
+        elif int_term == "usage":
+            msg.info("Type <number> <unit> to convert. Example: 23 C")
+        
             
         elif len(parts) == 2:
             
